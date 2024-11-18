@@ -1,0 +1,36 @@
+import re
+import traceback
+
+def process_dart_file(input_file_path, output_file_path):
+    try:
+        # Read the entire content of the file
+        with open(input_file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+        
+        # Define patterns and their corresponding replacements
+        patterns = {
+            r'left:\s*(-?\d+\.?\d*)': r'left: responsive.left(\1)',
+            r'top:\s*(-?\d+\.?\d*)': r'top: responsive.top(\1)',
+            r'width:\s*(-?\d+\.?\d*)': r'width: responsive.width(\1)',
+            r'height:\s*(-?\d+\.?\d*)': r'height: responsive.height(\1)',
+        }
+        
+        # Perform the replacements in the content
+        for pattern, replacement in patterns.items():
+            content = re.sub(pattern, replacement, content)
+        
+        # Write the modified content to the output file
+        with open(output_file_path, 'w', encoding='utf-8') as file:
+            file.write(content)
+        
+        print(f"File processed successfully. Modified file saved as: {output_file_path}")
+    except Exception as e:
+        # Print the full error traceback for debugging
+        print("An error occurred:")
+        traceback.print_exc()
+
+# Use raw string literals to avoid issues with backslashes
+input_file = r'D:\Flutter_Projects\tapp\lib\main.dart'  # Path to the Dart file to be processed
+output_file = r'D:\Flutter_Projects\tapp\lib\mainfixed.dart'  # Path to save the modified Dart file
+
+process_dart_file(input_file, output_file)
